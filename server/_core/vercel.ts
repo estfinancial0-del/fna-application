@@ -8,6 +8,7 @@ import "dotenv/config";
 import express from "express";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
+import { registerSimpleAuthRoutes } from "./simpleAuth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 
@@ -20,6 +21,9 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // OAuth callback under /api/oauth/callback
 registerOAuthRoutes(app);
+
+// Simple username/password authentication
+registerSimpleAuthRoutes(app);
 
 // tRPC API under /api/trpc
 app.use(
