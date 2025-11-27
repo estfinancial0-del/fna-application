@@ -64,22 +64,15 @@ export default function FnaForm() {
     );
   }
 
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!authLoading && !user) {
+      window.location.href = "/login";
+    }
+  }, [user, authLoading]);
+
   if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-muted/30">
-        <Card className="max-w-md">
-          <CardHeader>
-            <CardTitle>Authentication Required</CardTitle>
-            <CardDescription>Please log in to complete your Financial Needs Analysis</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button onClick={() => window.location.href = "/login"} className="w-full">
-              Log In
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return null; // Will redirect to login
   }
 
   if (!submissionId) {
