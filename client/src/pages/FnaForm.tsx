@@ -31,6 +31,13 @@ export default function FnaForm() {
     },
   });
 
+  // Redirect to login if not authenticated (must be before any returns)
+  useEffect(() => {
+    if (!authLoading && !user) {
+      window.location.href = "/login";
+    }
+  }, [user, authLoading]);
+
   useEffect(() => {
     if (user && !submissionId) {
       createSubmissionMutation.mutate();
@@ -63,13 +70,6 @@ export default function FnaForm() {
       </div>
     );
   }
-
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!authLoading && !user) {
-      window.location.href = "/login";
-    }
-  }, [user, authLoading]);
 
   if (!user) {
     return null; // Will redirect to login
