@@ -4,6 +4,24 @@ import * as db from "../db";
 import { getSessionCookieOptions } from "./cookies";
 import { sdk } from "./sdk";
 
+// Parse users from environment variable
+// Format: username1:password1,username2:password2,username3:password3
+function getValidUsers(): Map<string, string> {
+  const users = new Map<string, string>();
+  
+  const usersEnv = process.env.AUTH_USERS || "admin:admin123,user1:password1,user2:password2";
+  
+  const userPairs = usersEnv.split(',');
+  for (const pair of userPairs) {
+    const [username, password] = pair.split(':');
+    if (username && password) {
+      users.set(username.trim(), password.trim());
+    }
+  }
+  
+  return users;
+}
+
 export function registerSimpleAuthRoutes(app: Express) {
   // Simple login endpoint
   app.post("/api/auth/login", async (req: Request, res: Response) => {
@@ -14,12 +32,11 @@ export function registerSimpleAuthRoutes(app: Express) {
       return;
     }
 
-    // Get credentials from environment variables
-    const validUsername = process.env.ADMIN_USERNAME || "admin";
-    const validPassword = process.env.ADMIN_PASSWORD || "admin123";
+    // Get valid users
+    const validUsers = getValidUsers();
 
-    // Simple credential check
-    if (username !== validUsername || password !== validPassword) {
+    // Check if username exists and password matches
+    if (!validUsers.has(username) || validUsers.get(username) !== password) {
       res.status(401).json({ error: "Invalid username or password" });
       return;
     }
