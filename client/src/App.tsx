@@ -9,11 +9,13 @@ import FnaForm from "./pages/FnaForm";
 import FnaSuccess from "./pages/FnaSuccess";
 import AdminDashboard from "./pages/AdminDashboard";
 import FnaDetailView from "./pages/FnaDetailView";
+import { LoginPage } from "./pages/LoginPage";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
+      <Route path="/login" component={LoginPage} />
       <Route path={"/"} component={Home} />
       <Route path="/fna" component={FnaForm} />
       <Route path="/fna/success" component={FnaSuccess} />
