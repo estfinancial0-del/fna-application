@@ -14,8 +14,8 @@ echo "[2/5] Building Vercel serverless function..."
 pnpm esbuild server/_core/vercel.ts \
   --platform=node \
   --bundle \
-  --format=esm \
-  --outfile=dist/vercel-api.mjs
+  --format=cjs \
+  --outfile=dist/vercel-api.cjs
 
 # Step 3: Create Vercel output structure
 echo ""
@@ -33,13 +33,13 @@ cp -r dist/public/* .vercel/output/static/
 echo ""
 echo "[5/5] Creating API serverless function..."
 mkdir -p .vercel/output/functions/api.func
-cp dist/vercel-api.mjs .vercel/output/functions/api.func/index.mjs
+cp dist/vercel-api.cjs .vercel/output/functions/api.func/index.cjs
 
 # Create function configuration
 cat > .vercel/output/functions/api.func/.vc-config.json << 'EOF'
 {
   "runtime": "nodejs22.x",
-  "handler": "index.mjs",
+  "handler": "index.cjs",
   "launcherType": "Nodejs"
 }
 EOF
