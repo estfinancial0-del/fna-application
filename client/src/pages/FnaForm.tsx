@@ -73,7 +73,7 @@ export default function FnaForm() {
             <CardDescription>Please log in to complete your Financial Needs Analysis</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button onClick={() => window.location.href = "/api/oauth/login"} className="w-full">
+            <Button onClick={() => window.location.href = "/login"} className="w-full">
               Log In
             </Button>
           </CardContent>
