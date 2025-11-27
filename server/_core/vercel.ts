@@ -4,7 +4,7 @@
  * Static files are served by Vercel's CDN from .vercel/output/static/
  */
 
-import "dotenv/config";
+// dotenv not needed in Vercel - environment variables are automatically available
 import express from "express";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
