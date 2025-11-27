@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { APP_TITLE } from "@/const";
 
+// Simple username/password login page
 export function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
