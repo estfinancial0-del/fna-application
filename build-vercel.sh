@@ -13,7 +13,6 @@ echo ""
 echo "[2/5] Building Vercel serverless function..."
 pnpm esbuild server/_core/vercel.ts \
   --platform=node \
-  --packages=external \
   --bundle \
   --format=esm \
   --outfile=dist/vercel-api.mjs
