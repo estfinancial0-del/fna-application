@@ -3,35 +3,27 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Loader2, UserPlus } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 
 export default function AddJohnUser() {
-  const [isProcessing, setIsProcessing] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleAddUser = async () => {
-    setIsProcessing(true);
-    try {
-      // Call the login endpoint with john's credentials to create the user
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: 'john@est.com.au',
-          password: '1234'
-        })
-      });
-
-      if (response.ok) {
-        toast.success("User john@est.com.au created successfully!");
-        setSuccess(true);
-      } else {
-        toast.error("Failed to create user");
-      }
-    } catch (error) {
-      toast.error("Error creating user");
-    } finally {
-      setIsProcessing(false);
+  const createUserMutation = trpc.admin.createUser.useMutation({
+    onSuccess: () => {
+      toast.success("User john@est.com.au created successfully!");
+      setSuccess(true);
+    },
+    onError: (error) => {
+      toast.error(`Failed to create user: ${error.message}`);
     }
+  });
+
+  const handleAddUser = () => {
+    createUserMutation.mutate({
+      email: "john@est.com.au",
+      password: "1234",
+      name: "John Calagis"
+    });
   };
 
   return (
@@ -59,10 +51,10 @@ export default function AddJohnUser() {
             
             <Button 
               onClick={handleAddUser} 
-              disabled={isProcessing || success}
+              disabled={createUserMutation.isPending || success}
               className="w-full"
             >
-              {isProcessing && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+              {createUserMutation.isPending && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
               {success ? "✓ User Created" : "Create User"}
             </Button>
 
