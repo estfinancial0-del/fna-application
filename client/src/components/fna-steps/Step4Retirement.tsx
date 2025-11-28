@@ -60,14 +60,14 @@ export function Step4Retirement({ submissionId, onNext }: Step4Props) {
   const onSubmit = (data: RetirementForm) => {
     saveMutation.mutate({
       fnaSubmissionId: submissionId,
-      estimatedRetirementAge: Number(data.estimatedRetirementAge),
-      currentAge: Number(data.currentAge),
-      desiredYearlyIncome: Number(data.desiredYearlyIncome),
-      superannuation: Number(data.superannuation),
-      savings: Number(data.savings),
-      sharesBonds: Number(data.sharesBonds),
-      equityNotHome: Number(data.equityNotHome),
-      otherAssets: Number(data.otherAssets),
+      estimatedRetirementAge: Number(data.estimatedRetirementAge) || 0,
+      currentAge: Number(data.currentAge) || 0,
+      desiredYearlyIncome: Number(data.desiredYearlyIncome) || 0,
+      superannuation: Number(data.superannuation) || 0,
+      savings: Number(data.savings) || 0,
+      sharesBonds: Number(data.sharesBonds) || 0,
+      equityNotHome: Number(data.equityNotHome) || 0,
+      otherAssets: Number(data.otherAssets) || 0,
     });
   };
 
