@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { APP_TITLE } from "@/const";
+import { APP_TITLE, APP_LOGO } from "@/const";
 
 // Simple username/password login page
 export function LoginPage() {
@@ -52,13 +52,18 @@ export function LoginPage() {
         width: "100%",
         maxWidth: "400px",
       }}>
-        <h1 style={{
+        <div style={{
           textAlign: "center",
           marginBottom: "2rem",
-          color: "#333",
         }}>
-          {APP_TITLE}
-        </h1>
+          <img src={APP_LOGO} alt="EST Financial" style={{ height: "60px", marginBottom: "1rem", display: "inline-block" }} />
+          <h1 style={{
+            color: "#333",
+            margin: 0,
+          }}>
+            {APP_TITLE}
+          </h1>
+        </div>
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: "1rem" }}>

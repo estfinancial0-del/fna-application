@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight, Save } from "lucide-react";
 import { ProgressSidebar } from "@/components/ProgressSidebar";
 import { trpc } from "@/lib/trpc";
+import { APP_LOGO } from "@/const";
 
 interface WizardStep {
   id: string;
@@ -85,7 +86,10 @@ export function FnaWizard({ steps, submissionId, onComplete }: FnaWizardProps) {
         <div className="container py-4">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Financial Needs Analysis</h1>
+              <div className="flex items-center gap-3 mb-1">
+                <img src={APP_LOGO} alt="EST Financial" className="h-10" />
+                <h1 className="text-2xl font-bold text-foreground">Financial Needs Analysis</h1>
+              </div>
               <p className="text-sm text-muted-foreground">
                 Step {currentStepIndex + 1} of {steps.length}: {currentStep.title}
               </p>
