@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { Loader2, CreditCard, FileCheck } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useEffect } from "react";
+import { SignaturePad } from "@/components/SignaturePad";
 
 interface Step2Props {
   submissionId: number;
@@ -326,15 +327,13 @@ export function Step2PaymentAgreement({ submissionId, onNext, onPrevious }: Step
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="clientSignature1">Client's Signature *</Label>
-              <Input
-                id="clientSignature1"
-                {...register("clientSignature1", { required: "Signature is required" })}
-                placeholder="Type full name as signature"
+              <SignaturePad
+                label="Client's Signature"
+                value={watch("clientSignature1")}
+                onChange={(sig) => setValue("clientSignature1", sig)}
+                required
+                error={errors.clientSignature1?.message}
               />
-              {errors.clientSignature1 && (
-                <p className="text-sm text-red-600">{errors.clientSignature1.message}</p>
-              )}
             </div>
 
             <div className="space-y-2">
@@ -362,11 +361,11 @@ export function Step2PaymentAgreement({ submissionId, onNext, onPrevious }: Step
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="clientSignature2">Client's Signature (Optional)</Label>
-              <Input
-                id="clientSignature2"
-                {...register("clientSignature2")}
-                placeholder="Type full name as signature"
+              <SignaturePad
+                label="Client's Signature"
+                value={watch("clientSignature2")}
+                onChange={(sig) => setValue("clientSignature2", sig || "")}
+                required={false}
               />
             </div>
 

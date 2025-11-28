@@ -17,9 +17,18 @@ interface FnaData {
 }
 
 export function generateFnaPdf(data: FnaData) {
-  const doc = new jsPDF();
+  // Initialize PDF with A4 format (210mm x 297mm)
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4'
+  });
+  
   const pageWidth = doc.internal.pageSize.getWidth();
-  let yPos = 20;
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const margin = 15; // 15mm margins
+  const contentWidth = pageWidth - (margin * 2);
+  let yPos = margin;
 
   // Header
   doc.setFontSize(20);
@@ -34,14 +43,14 @@ export function generateFnaPdf(data: FnaData) {
   yPos += 15;
   doc.setDrawColor(220, 38, 38);
   doc.setLineWidth(0.5);
-  doc.line(20, yPos, pageWidth - 20, yPos);
+  doc.line(margin, yPos, pageWidth - margin, yPos);
   
   yPos += 15;
 
   // Client Details Section
   doc.setFontSize(14);
   doc.setTextColor(0, 0, 0);
-  doc.text("Client Information", 20, yPos);
+  doc.text("Client Information", margin, yPos);
   yPos += 10;
 
   const clientInfo = [
@@ -68,19 +77,19 @@ export function generateFnaPdf(data: FnaData) {
   yPos = (doc as any).lastAutoTable.finalY + 15;
 
   // Financial Goals Section
-  if (yPos > 250) {
+  if (yPos > pageHeight - 50) {
     doc.addPage();
-    yPos = 20;
+    yPos = margin;
   }
 
   doc.setFontSize(14);
-  doc.text("Financial Goals", 20, yPos);
+  doc.text("Financial Goals", margin, yPos);
   yPos += 10;
 
   if (data.wealthCreation) {
     doc.setFontSize(12);
     doc.setTextColor(220, 38, 38);
-    doc.text("Wealth Creation", 20, yPos);
+    doc.text("Wealth Creation", margin, yPos);
     yPos += 7;
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(10);
@@ -109,14 +118,14 @@ export function generateFnaPdf(data: FnaData) {
   }
 
   if (data.wealthProtection) {
-    if (yPos > 240) {
+    if (yPos > pageHeight - 60) {
       doc.addPage();
-      yPos = 20;
+      yPos = margin;
     }
 
     doc.setFontSize(12);
     doc.setTextColor(220, 38, 38);
-    doc.text("Wealth Protection", 20, yPos);
+    doc.text("Wealth Protection", margin, yPos);
     yPos += 7;
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(10);
@@ -143,13 +152,13 @@ export function generateFnaPdf(data: FnaData) {
 
   // Retirement Planning Section
   if (data.retirement) {
-    if (yPos > 240) {
+    if (yPos > pageHeight - 60) {
       doc.addPage();
-      yPos = 20;
+      yPos = margin;
     }
 
     doc.setFontSize(14);
-    doc.text("Retirement Planning", 20, yPos);
+    doc.text("Retirement Planning", margin, yPos);
     yPos += 10;
 
     const retirementInfo = [
@@ -180,13 +189,13 @@ export function generateFnaPdf(data: FnaData) {
 
   // Financial Dependents Section
   if (data.dependents && data.dependents.length > 0) {
-    if (yPos > 220) {
+    if (yPos > pageHeight - 80) {
       doc.addPage();
-      yPos = 20;
+      yPos = margin;
     }
 
     doc.setFontSize(14);
-    doc.text("Financial Dependents", 20, yPos);
+    doc.text("Financial Dependents", margin, yPos);
     yPos += 10;
 
     const dependentsData = data.dependents.map((dep) => [
@@ -210,13 +219,13 @@ export function generateFnaPdf(data: FnaData) {
 
   // Assets Section
   if (data.assets && data.assets.length > 0) {
-    if (yPos > 220) {
+    if (yPos > pageHeight - 80) {
       doc.addPage();
-      yPos = 20;
+      yPos = margin;
     }
 
     doc.setFontSize(14);
-    doc.text("Assets & Liabilities", 20, yPos);
+    doc.text("Assets & Liabilities", margin, yPos);
     yPos += 10;
 
     const assetsData = data.assets.map((asset) => [
@@ -241,13 +250,13 @@ export function generateFnaPdf(data: FnaData) {
 
   // Risk Management Section
   if (data.riskManagement && data.riskManagement.length > 0) {
-    if (yPos > 220) {
+    if (yPos > pageHeight - 80) {
       doc.addPage();
-      yPos = 20;
+      yPos = margin;
     }
 
     doc.setFontSize(14);
-    doc.text("Risk Management / Insurance", 20, yPos);
+    doc.text("Risk Management / Insurance", margin, yPos);
     yPos += 10;
 
     const riskData = data.riskManagement.map((risk) => [
