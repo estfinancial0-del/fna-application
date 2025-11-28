@@ -139,6 +139,19 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+export async function makeUserAdmin(email: string) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.update(users)
+    .set({ role: "admin" })
+    .where(eq(users.email, email));
+
+  return { success: true, message: "User is now an admin" };
+}
+
 // ============================================================================
 // FNA Submission Functions
 // ============================================================================
