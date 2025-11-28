@@ -52,7 +52,7 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Link href="/fna">
+            <Link href="/fna/start">
               <Button size="lg" className="gap-2 text-lg px-8">
                 Start Your FNA
                 <ArrowRight className="h-5 w-5" />

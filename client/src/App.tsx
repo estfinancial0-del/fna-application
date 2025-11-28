@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import FnaForm from "./pages/FnaForm";
+import FnaIntroduction from "./pages/FnaIntroduction";
 import FnaSuccess from "./pages/FnaSuccess";
 import AdminDashboard from "./pages/AdminDashboard";
 import FnaDetailView from "./pages/FnaDetailView";
@@ -17,6 +18,7 @@ function Router() {
     <Switch>
       <Route path="/login" component={LoginPage} />
       <Route path={"/"} component={Home} />
+      <Route path="/fna/start" component={FnaIntroduction} />
       <Route path="/fna" component={FnaForm} />
       <Route path="/fna/success" component={FnaSuccess} />
       <Route path="/admin" component={AdminDashboard} />
