@@ -57,7 +57,7 @@ export type InsertClientDetails = typeof clientDetails.$inferInsert;
 export const paymentAgreement = mysqlTable("payment_agreement", {
   id: int("id").autoincrement().primaryKey(),
   fnaSubmissionId: int("fnaSubmissionId").notNull(),
-  paymentMethod: mysqlEnum("paymentMethod", ["cash", "cheque", "credit_card"]),
+  paymentMethod: mysqlEnum("paymentMethod", ["cash", "cheque", "credit_card", "eftpos"]),
   fullName: varchar("fullName", { length: 255 }),
   paymentDescription: varchar("paymentDescription", { length: 255 }),
   cardHolderName: varchar("cardHolderName", { length: 255 }),
