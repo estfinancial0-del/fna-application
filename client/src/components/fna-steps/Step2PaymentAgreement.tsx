@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { Loader2, CreditCard, FileCheck } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { SignaturePad } from "@/components/SignaturePad";
 
 interface Step2Props {
