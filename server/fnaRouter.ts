@@ -175,6 +175,44 @@ export const fnaRouter = router({
     }),
 
   // ============================================================================
+  // Payment & Agreement
+  // ============================================================================
+  
+  savePaymentAgreement: protectedProcedure
+    .input(z.object({
+      fnaSubmissionId: z.number(),
+      paymentMethod: z.enum(["cash", "cheque", "credit_card"]).optional(),
+      fullName: z.string().optional(),
+      paymentDescription: z.string().optional(),
+      cardHolderName: z.string().optional(),
+      amount: z.string().optional(),
+      cardType: z.string().optional(),
+      cardNumber: z.string().optional(),
+      cardExpiry: z.string().optional(),
+      agree290Payment: z.boolean().optional(),
+      agreeRefundPolicy: z.boolean().optional(),
+      agreeBringDocuments: z.boolean().optional(),
+      agree2Hours: z.boolean().optional(),
+      clientName1: z.string().optional(),
+      clientSignature1: z.string().optional(),
+      clientDate1: z.string().optional(),
+      clientName2: z.string().optional(),
+      clientSignature2: z.string().optional(),
+      clientDate2: z.string().optional(),
+    }))
+    .mutation(async ({ input }) => {
+      const id = await db.upsertPaymentAgreement(input);
+      return { id };
+    }),
+
+  getPaymentAgreement: protectedProcedure
+    .input(z.object({ fnaSubmissionId: z.number() }))
+    .query(async ({ input }) => {
+      const result = await db.getPaymentAgreement(input.fnaSubmissionId);
+      return result ?? null;
+    }),
+
+  // ============================================================================
   // Financial Goals
   // ============================================================================
   

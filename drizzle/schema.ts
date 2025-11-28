@@ -1,4 +1,4 @@
-import { boolean, int, mysqlEnum, mysqlTable, text, timestamp, varchar, datetime } from "drizzle-orm/mysql-core";
+import { boolean, int, mysqlEnum, mysqlTable, text, timestamp, varchar, datetime, decimal, date } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -50,6 +50,35 @@ export const clientDetails = mysqlTable("client_details", {
 
 export type ClientDetails = typeof clientDetails.$inferSelect;
 export type InsertClientDetails = typeof clientDetails.$inferInsert;
+
+/**
+ * Payment & Agreement Information
+ */
+export const paymentAgreement = mysqlTable("payment_agreement", {
+  id: int("id").autoincrement().primaryKey(),
+  fnaSubmissionId: int("fnaSubmissionId").notNull(),
+  paymentMethod: mysqlEnum("paymentMethod", ["cash", "cheque", "credit_card"]),
+  fullName: varchar("fullName", { length: 255 }),
+  paymentDescription: varchar("paymentDescription", { length: 255 }),
+  cardHolderName: varchar("cardHolderName", { length: 255 }),
+  amount: decimal("amount", { precision: 10, scale: 2 }),
+  cardType: varchar("cardType", { length: 50 }),
+  cardNumber: varchar("cardNumber", { length: 19 }),
+  cardExpiry: varchar("cardExpiry", { length: 5 }),
+  agree290Payment: boolean("agree290Payment").default(false),
+  agreeRefundPolicy: boolean("agreeRefundPolicy").default(false),
+  agreeBringDocuments: boolean("agreeBringDocuments").default(false),
+  agree2Hours: boolean("agree2Hours").default(false),
+  clientName1: varchar("clientName1", { length: 255 }),
+  clientSignature1: varchar("clientSignature1", { length: 255 }),
+  clientDate1: date("clientDate1"),
+  clientName2: varchar("clientName2", { length: 255 }),
+  clientSignature2: varchar("clientSignature2", { length: 255 }),
+  clientDate2: date("clientDate2"),
+});
+
+export type PaymentAgreement = typeof paymentAgreement.$inferSelect;
+export type InsertPaymentAgreement = typeof paymentAgreement.$inferInsert;
 
 /**
  * Financial Goals - Wealth Creation (Important/Interested/Not Important)

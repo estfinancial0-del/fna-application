@@ -3,6 +3,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { FnaWizard } from "@/components/FnaWizard";
 import { Step1ClientDetails } from "@/components/fna-steps/Step1ClientDetails";
+import { Step2PaymentAgreement } from "@/components/fna-steps/Step2PaymentAgreement";
 import { Step2FinancialGoals } from "@/components/fna-steps/Step2FinancialGoals";
 import { Step3Lifestyle } from "@/components/fna-steps/Step3Lifestyle";
 import { Step4Retirement } from "@/components/fna-steps/Step4Retirement";
@@ -94,6 +95,12 @@ export default function FnaForm() {
       title: "Client & Appointment Details",
       description: "Let's start with your basic information and appointment details",
       component: Step1ClientDetails,
+    },
+    {
+      id: "payment-agreement",
+      title: "Payment & Agreement",
+      description: "Payment information and appointment acknowledgment",
+      component: Step2PaymentAgreement,
     },
     {
       id: "financial-goals",

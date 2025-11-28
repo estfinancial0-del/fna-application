@@ -1,0 +1,23 @@
+CREATE TABLE `payment_agreement` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`fnaSubmissionId` int NOT NULL,
+	`paymentMethod` enum('cash','cheque','credit_card'),
+	`fullName` varchar(255),
+	`paymentDescription` varchar(255),
+	`cardHolderName` varchar(255),
+	`amount` decimal(10,2),
+	`cardType` varchar(50),
+	`cardNumber` varchar(19),
+	`cardExpiry` varchar(5),
+	`agree290Payment` boolean DEFAULT false,
+	`agreeRefundPolicy` boolean DEFAULT false,
+	`agreeBringDocuments` boolean DEFAULT false,
+	`agree2Hours` boolean DEFAULT false,
+	`clientName1` varchar(255),
+	`clientSignature1` varchar(255),
+	`clientDate1` date,
+	`clientName2` varchar(255),
+	`clientSignature2` varchar(255),
+	`clientDate2` date,
+	CONSTRAINT `payment_agreement_id` PRIMARY KEY(`id`)
+);

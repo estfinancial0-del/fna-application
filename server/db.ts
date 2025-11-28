@@ -9,6 +9,8 @@ import {
   FnaSubmission,
   clientDetails,
   InsertClientDetails,
+  paymentAgreement,
+  InsertPaymentAgreement,
   wealthCreationGoals,
   InsertWealthCreationGoals,
   wealthProtectionGoals,
@@ -266,6 +268,42 @@ export async function getClientDetails(fnaSubmissionId: number) {
 
   const result = await db.select().from(clientDetails)
     .where(eq(clientDetails.fnaSubmissionId, fnaSubmissionId))
+    .limit(1);
+  
+  return result.length > 0 ? result[0] : undefined;
+}
+
+// ============================================================================
+// Payment & Agreement Functions
+// ============================================================================
+
+export async function upsertPaymentAgreement(data: InsertPaymentAgreement) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const existing = await db.select().from(paymentAgreement)
+    .where(eq(paymentAgreement.fnaSubmissionId, data.fnaSubmissionId))
+    .limit(1);
+
+  if (existing.length > 0) {
+    await db.update(paymentAgreement).set(data).where(eq(paymentAgreement.id, existing[0].id));
+    return existing[0].id;
+  } else {
+    const result = await db.insert(paymentAgreement).values(data);
+    return Number(result[0].insertId);
+  }
+}
+
+export async function getPaymentAgreement(fnaSubmissionId: number) {
+  const db = await getDb();
+  if (!db) {
+    return undefined;
+  }
+
+  const result = await db.select().from(paymentAgreement)
+    .where(eq(paymentAgreement.fnaSubmissionId, fnaSubmissionId))
     .limit(1);
   
   return result.length > 0 ? result[0] : undefined;

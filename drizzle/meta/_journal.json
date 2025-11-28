@@ -15,6 +15,13 @@
       "when": 1763525306978,
       "tag": "0001_closed_firestar",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1764290386556,
+      "tag": "0002_faulty_mole_man",
+      "breakpoints": true
     }
   ]
 }
