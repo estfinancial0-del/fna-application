@@ -22,14 +22,14 @@ export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Fetch all FNA submissions (admin only)
+  // Fetch all FNA submissions
   const { data: submissions, isLoading } = trpc.fna.getAllSubmissions.useQuery(undefined, {
-    enabled: user?.role === "admin",
+    enabled: !!user,
   });
 
-  // Redirect if not admin
-  if (!loading && user?.role !== "admin") {
-    setLocation("/");
+  // Redirect if not logged in
+  if (!loading && !user) {
+    setLocation("/login");
     return null;
   }
 
