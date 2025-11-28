@@ -3,12 +3,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLocation } from "wouter";
 import { FileText, CheckCircle2 } from "lucide-react";
 import { APP_LOGO } from "@/const";
+import { useAuth } from "@/_core/hooks/useAuth";
 
 export default function FnaIntroduction() {
   const [, setLocation] = useLocation();
+  const { user } = useAuth();
 
   const handleBegin = () => {
-    setLocation("/fna");
+    // Check if user is logged in
+    if (!user) {
+      // Redirect to login page
+      setLocation("/login");
+    } else {
+      // User is logged in, proceed to FNA form
+      setLocation("/fna");
+    }
   };
 
   return (
