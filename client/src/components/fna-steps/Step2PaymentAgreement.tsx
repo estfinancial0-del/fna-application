@@ -18,7 +18,7 @@ interface Step2Props {
 }
 
 interface PaymentAgreementFormData {
-  paymentMethod: "cash" | "cheque" | "credit_card";
+  paymentMethod: "cash" | "cheque" | "credit_card" | "eftpos";
   fullName: string;
   paymentDescription: string;
   cardHolderName: string;
@@ -39,6 +39,10 @@ interface PaymentAgreementFormData {
 }
 
 export function Step2PaymentAgreement({ submissionId, onNext, onPrevious }: Step2Props) {
+  // Fetch client details for appointment information
+  const { data: clientDetails } = trpc.fna.getClientDetails.useQuery({ 
+    fnaSubmissionId: submissionId 
+  });
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<PaymentAgreementFormData>({
     defaultValues: {
       paymentMethod: "credit_card",
@@ -108,6 +112,40 @@ export function Step2PaymentAgreement({ submissionId, onNext, onPrevious }: Step
         </p>
       </div>
 
+      {/* Appointment Information */}
+      {clientDetails && (
+        <Card className="bg-blue-50 border-blue-200">
+          <CardHeader>
+            <CardTitle className="text-lg">Appointment Information</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div>
+                <p className="text-gray-600 font-medium mb-1">Day and Date</p>
+                <p className="text-gray-900">
+                  {clientDetails.appointmentDate 
+                    ? new Date(clientDetails.appointmentDate).toLocaleDateString('en-AU', { 
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })
+                    : 'Not set'}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-600 font-medium mb-1">Time</p>
+                <p className="text-gray-900">{clientDetails.appointmentTime || 'Not set'}</p>
+              </div>
+              <div>
+                <p className="text-gray-600 font-medium mb-1">Your Appointment Location</p>
+                <p className="text-gray-900">{clientDetails.appointmentLocation || 'Not set'}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Payment Information */}
       <Card>
         <CardHeader>
@@ -136,32 +174,46 @@ export function Step2PaymentAgreement({ submissionId, onNext, onPrevious }: Step
                 <RadioGroupItem value="credit_card" id="credit_card" />
                 <Label htmlFor="credit_card" className="font-normal cursor-pointer">Credit Card</Label>
               </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="eftpos" id="eftpos" />
+                <Label htmlFor="eftpos" className="font-normal cursor-pointer">EFTPOS (Pay on the spot)</Label>
+              </div>
             </RadioGroup>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="fullName">Full Name *</Label>
-              <Input
-                id="fullName"
-                {...register("fullName", { required: "Full name is required" })}
-                placeholder="Enter full name"
-              />
-              {errors.fullName && (
-                <p className="text-sm text-red-600">{errors.fullName.message}</p>
-              )}
-            </div>
+          {paymentMethod !== "eftpos" && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="fullName">Full Name *</Label>
+                <Input
+                  id="fullName"
+                  {...register("fullName", { required: paymentMethod !== "eftpos" ? "Full name is required" : false })}
+                  placeholder="Enter full name"
+                />
+                {errors.fullName && (
+                  <p className="text-sm text-red-600">{errors.fullName.message}</p>
+                )}
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="paymentDescription">Payment Description</Label>
-              <Input
-                id="paymentDescription"
-                {...register("paymentDescription")}
-                placeholder="e.g., Consultation Fee"
-                defaultValue="Consultation Fee"
-              />
+              <div className="space-y-2">
+                <Label htmlFor="paymentDescription">Payment Description</Label>
+                <Input
+                  id="paymentDescription"
+                  {...register("paymentDescription")}
+                  placeholder="e.g., Consultation Fee"
+                  defaultValue="Consultation Fee"
+                />
+              </div>
             </div>
-          </div>
+          )}
+
+          {paymentMethod === "eftpos" && (
+            <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-sm text-green-900">
+                ✓ Payment will be made on the spot via EFTPOS. No payment details required.
+              </p>
+            </div>
+          )}
 
           {paymentMethod === "credit_card" && (
             <>
