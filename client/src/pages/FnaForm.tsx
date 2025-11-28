@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { useLocation } from "wouter";
 
 export default function FnaForm() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth({ redirectOnUnauthenticated: true });
   const [, setLocation] = useLocation();
   const [submissionId, setSubmissionId] = useState<number | null>(null);
 
@@ -32,12 +32,7 @@ export default function FnaForm() {
     },
   });
 
-  // Redirect to login if not authenticated (must be before any returns)
-  useEffect(() => {
-    if (!authLoading && !user) {
-      window.location.href = "/login";
-    }
-  }, [user, authLoading]);
+  // Authentication is handled by useAuth hook with redirectOnUnauthenticated
 
   useEffect(() => {
     if (user && !submissionId) {
