@@ -33,14 +33,9 @@ export default function Home() {
             <h1 className="text-2xl font-bold text-primary">{APP_TITLE}</h1>
           </div>
           {user && (
-            <div className="flex items-center gap-4">
-              <div className="text-sm text-muted-foreground">
-                Welcome, {user.name || user.email}
-              </div>
-              <Button variant="outline" size="sm" onClick={() => setLocation("/admin")}>
-                View Submissions
-              </Button>
-            </div>
+            <Button variant="outline" size="sm" onClick={() => setLocation("/admin")}>
+              View Submissions
+            </Button>
           )}
         </div>
       </header>
