@@ -72,6 +72,16 @@ export function FnaWizard({ steps, submissionId, onComplete }: FnaWizardProps) {
     }
   };
 
+  const handleStepClick = (stepId: number) => {
+    // stepId is 1-indexed, convert to 0-indexed
+    const stepIndex = stepId - 1;
+    // Only allow navigation to current or completed steps
+    if (stepIndex <= currentStepIndex || completedSteps.includes(stepId)) {
+      setCurrentStepIndex(stepIndex);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   const StepComponent = currentStep.component;
 
   return (
@@ -81,6 +91,7 @@ export function FnaWizard({ steps, submissionId, onComplete }: FnaWizardProps) {
         totalSteps={steps.length} 
         steps={sidebarSteps}
         completedSteps={completedSteps}
+        onStepClick={handleStepClick}
       />
       <div className="flex-1">
       {/* Header with Progress */}

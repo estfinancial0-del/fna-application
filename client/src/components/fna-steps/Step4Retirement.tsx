@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { CurrencyInput } from "@/components/ui/formatted-inputs";
 import { toast } from "sonner";
-import { Loader2, Calculator } from "lucide-react";
+import { Loader2, Calculator, Save } from "lucide-react";
+import { useAutosave } from "@/hooks/useAutosave";
 
 interface Step4Props {
   submissionId: number;
@@ -55,6 +56,33 @@ export function Step4Retirement({ submissionId, onNext }: Step4Props) {
     onError: (error) => {
       toast.error(`Failed to save: ${error.message}`);
     },
+  });
+
+  const autoSaveMutation = trpc.fna.saveRetirementPlanning.useMutation({
+    onSuccess: () => {
+      toast.success("Draft saved", { duration: 1500 });
+    },
+  });
+
+  const handleAutoSave = useCallback((data: RetirementForm) => {
+    autoSaveMutation.mutate({
+      fnaSubmissionId: submissionId,
+      estimatedRetirementAge: Number(data.estimatedRetirementAge) || 0,
+      currentAge: Number(data.currentAge) || 0,
+      desiredYearlyIncome: Number(data.desiredYearlyIncome) || 0,
+      superannuation: Number(data.superannuation) || 0,
+      savings: Number(data.savings) || 0,
+      sharesBonds: Number(data.sharesBonds) || 0,
+      equityNotHome: Number(data.equityNotHome) || 0,
+      otherAssets: Number(data.otherAssets) || 0,
+    });
+  }, [submissionId, autoSaveMutation]);
+
+  // Enable autosave
+  useAutosave({
+    watch,
+    onSave: handleAutoSave,
+    delay: 3000, // Save 3 seconds after user stops typing
   });
 
   const onSubmit = (data: RetirementForm) => {

@@ -12,9 +12,10 @@ interface ProgressSidebarProps {
   totalSteps: number;
   steps: Step[];
   completedSteps: number[]; // Array of step IDs that have data saved
+  onStepClick?: (stepId: number) => void; // Optional callback for step navigation
 }
 
-export function ProgressSidebar({ currentStep, totalSteps, steps, completedSteps }: ProgressSidebarProps) {
+export function ProgressSidebar({ currentStep, totalSteps, steps, completedSteps, onStepClick }: ProgressSidebarProps) {
   const progress = Math.round((currentStep / totalSteps) * 100);
 
   return (
@@ -37,14 +38,17 @@ export function ProgressSidebar({ currentStep, totalSteps, steps, completedSteps
           const isUpcoming = step.id > currentStep;
 
           return (
-            <div
+            <button
               key={step.id}
+              onClick={() => onStepClick?.(step.id)}
               className={cn(
-                "flex items-start gap-3 p-3 rounded-lg transition-colors",
+                "flex items-start gap-3 p-3 rounded-lg transition-colors w-full text-left",
                 isCurrent && "bg-red-50 border border-red-200",
-                isCompleted && "bg-gray-50",
-                isUpcoming && "opacity-50"
+                isCompleted && "bg-gray-50 hover:bg-gray-100",
+                isUpcoming && "opacity-50 cursor-not-allowed",
+                onStepClick && !isUpcoming && "cursor-pointer hover:shadow-sm"
               )}
+              disabled={isUpcoming}
             >
               <div
                 className={cn(
@@ -69,7 +73,7 @@ export function ProgressSidebar({ currentStep, totalSteps, steps, completedSteps
                 </p>
                 <p className="text-xs text-gray-500 mt-0.5">{step.description}</p>
               </div>
-            </div>
+            </button>
           );
         })}
       </nav>
