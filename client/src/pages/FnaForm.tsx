@@ -43,7 +43,7 @@ export default function FnaForm() {
   const submitFnaMutation = trpc.fna.submitFna.useMutation({
     onSuccess: () => {
       toast.success("FNA submitted successfully!");
-      setLocation("/fna/success");
+      setLocation(`/fna/success?id=${submissionId}`);
     },
     onError: (error) => {
       toast.error(`Failed to submit: ${error.message}`);

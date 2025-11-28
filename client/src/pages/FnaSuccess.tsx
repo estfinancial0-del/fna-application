@@ -1,10 +1,86 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2 } from "lucide-react";
-import { useLocation } from "wouter";
+import { CheckCircle2, Download } from "lucide-react";
+import { useLocation, useSearch } from "wouter";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
+import { generateFnaPdf } from "@/lib/generateFnaPdf";
 
 export default function FnaSuccess() {
   const [, setLocation] = useLocation();
+  const search = useSearch();
+  const params = new URLSearchParams(search);
+  const submissionId = Number(params.get("id"));
+
+  // Load all FNA data for PDF export
+  const { data: clientDetails } = trpc.fna.getClientDetails.useQuery({
+    fnaSubmissionId: submissionId,
+  }, { enabled: !!submissionId });
+
+  const { data: wealthCreation } = trpc.fna.getWealthCreationGoals.useQuery({
+    fnaSubmissionId: submissionId,
+  }, { enabled: !!submissionId });
+
+  const { data: wealthProtection } = trpc.fna.getWealthProtectionGoals.useQuery({
+    fnaSubmissionId: submissionId,
+  }, { enabled: !!submissionId });
+
+  const { data: lifestyle } = trpc.fna.getLifestyleAspirations.useQuery({
+    fnaSubmissionId: submissionId,
+  }, { enabled: !!submissionId });
+
+  const { data: retirement } = trpc.fna.getRetirementPlanning.useQuery({
+    fnaSubmissionId: submissionId,
+  }, { enabled: !!submissionId });
+
+  const { data: personal1 } = trpc.fna.getPersonalDetails.useQuery({
+    fnaSubmissionId: submissionId,
+    clientNumber: 1,
+  }, { enabled: !!submissionId });
+
+  const { data: personal2 } = trpc.fna.getPersonalDetails.useQuery({
+    fnaSubmissionId: submissionId,
+    clientNumber: 2,
+  }, { enabled: !!submissionId });
+
+  const { data: dependents = [] } = trpc.fna.getFinancialDependents.useQuery({
+    fnaSubmissionId: submissionId,
+  }, { enabled: !!submissionId });
+
+  const { data: assets = [] } = trpc.fna.getAssetsLiabilities.useQuery({
+    fnaSubmissionId: submissionId,
+  }, { enabled: !!submissionId });
+
+  const { data: expenses = [] } = trpc.fna.getAnnualExpenses.useQuery({
+    fnaSubmissionId: submissionId,
+  }, { enabled: !!submissionId });
+
+  const handleExportPDF = () => {
+    if (!clientDetails) {
+      toast.error("No data available to export");
+      return;
+    }
+
+    try {
+      generateFnaPdf({
+        clientDetails,
+        wealthCreation,
+        wealthProtection,
+        lifestyle,
+        retirement,
+        personalDetails1: personal1,
+        personalDetails2: personal2,
+        dependents: dependents || [],
+        assets: assets || [],
+        riskManagement: [],
+        expenses: expenses || [],
+      });
+      toast.success("PDF exported successfully!");
+    } catch (error) {
+      console.error("PDF export error:", error);
+      toast.error("Failed to export PDF");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/30 p-4">
@@ -45,7 +121,13 @@ export default function FnaSuccess() {
             <p>If you have any questions in the meantime, please don't hesitate to contact your client manager.</p>
           </div>
 
-          <div className="flex gap-3 justify-center pt-4">
+          <div className="flex gap-3 justify-center pt-4 flex-wrap">
+            {submissionId && clientDetails && (
+              <Button onClick={handleExportPDF} className="gap-2">
+                <Download className="h-4 w-4" />
+                Export PDF
+              </Button>
+            )}
             <Button variant="outline" onClick={() => setLocation("/")}>
               Return Home
             </Button>
