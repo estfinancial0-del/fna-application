@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Mic } from "lucide-react";
+import { AudioRecorder } from "@/components/ui/audio-recorder";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Step2Props {
   submissionId: number;
@@ -162,6 +164,28 @@ export function Step2FinancialGoals({ submissionId, onNext }: Step2Props) {
 
   return (
     <div className="space-y-8">
+      {/* Getting to Know You - Audio Recording */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Mic className="h-5 w-5 text-primary" />
+            Getting to Know You
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground mb-4">
+            Tell us more about yourself and your financial goals. Record a voice message to help us understand your situation better.
+          </p>
+          <AudioRecorder
+            onRecordingComplete={(blob, url) => {
+              // TODO: Save audio recording to database
+              console.log("Recording completed:", { blob, url });
+            }}
+            maxDuration={300}
+          />
+        </CardContent>
+      </Card>
+
       {/* Wealth Creation Section */}
       <div>
         <h3 className="text-lg font-semibold mb-4 text-primary">Wealth Creation</h3>
