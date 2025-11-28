@@ -148,7 +148,16 @@ export const fnaRouter = router({
       clientName: z.string().optional(),
       clientManager: z.string().optional(),
       phone: z.string().optional(),
-      email: z.string().email().optional().or(z.literal("")),
+      email: z.string().optional().refine(
+        (val) => {
+          if (!val || val === "") return true;
+          // Split by comma and validate each email
+          const emails = val.split(',').map(e => e.trim());
+          const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+          return emails.every(email => emailRegex.test(email));
+        },
+        { message: "Invalid email address(es)" }
+      ),
       appointmentDate: z.date().optional(),
       appointmentTime: z.string().optional(),
       appointmentLocation: z.string().optional(),
