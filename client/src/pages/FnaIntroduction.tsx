@@ -7,17 +7,26 @@ import { useAuth } from "@/_core/hooks/useAuth";
 
 export default function FnaIntroduction() {
   const [, setLocation] = useLocation();
-  const { user } = useAuth();
+  const { user, loading } = useAuth({ redirectOnUnauthenticated: true });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null; // Will redirect to login
+  }
 
   const handleBegin = () => {
-    // Check if user is logged in
-    if (!user) {
-      // Redirect to login page
-      setLocation("/login");
-    } else {
-      // User is logged in, proceed to FNA form
-      setLocation("/fna");
-    }
+    // User is already authenticated at this point
+    setLocation("/fna");
   };
 
   return (
