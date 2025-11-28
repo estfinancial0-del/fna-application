@@ -353,12 +353,14 @@ export const fnaRouter = router({
       maritalStatus: z.string().optional(),
       typeOfEmployment: z.string().optional(),
       employer: z.string().optional(),
-      dateStarted: z.date().optional(),
+      dateStarted: z.string().optional(), // Changed to string for flexible input
       positionOccupation: z.string().optional(),
       previousEmployer: z.string().optional(),
       previousPosition: z.string().optional(),
       lengthOfEmployment: z.string().optional(),
+      incomeCurrency: z.string().optional(), // NEW
       taxableIncome: z.number().optional(),
+      estimatedSuper: z.number().optional(), // NEW
       lessSalarySacrifice: z.string().optional(),
       additionalBenefits: z.string().optional(),
       familyBenefits: z.string().optional(),
