@@ -86,10 +86,17 @@ export function Step2PaymentAgreement({ submissionId, onNext, onPrevious }: Step
   }, [existingData, setValue]);
 
   const onSubmit = (data: PaymentAgreementFormData) => {
+    // If EFTPOS selected, save as 'cash' since it's paid on the spot
+    const paymentData = {
+      ...data,
+      paymentMethod: data.paymentMethod === 'eftpos' ? 'cash' : data.paymentMethod,
+      paymentDescription: data.paymentMethod === 'eftpos' ? 'EFTPOS - Pay on the spot' : data.paymentDescription,
+    };
+    
     saveMutation.mutate({
       fnaSubmissionId: submissionId,
-      ...data,
-    });
+      ...paymentData,
+    } as any);
   };
 
   if (isLoading) {
