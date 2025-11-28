@@ -21,7 +21,7 @@ export default function MakeAdmin() {
 
   const handleMakeAdmin = () => {
     setIsProcessing(true);
-    makeAdminMutation.mutate({ email: "jim@est.com.au" });
+    makeAdminMutation.mutate({ email: "john@est.com.au" });
   };
 
   return (
@@ -40,7 +40,7 @@ export default function MakeAdmin() {
           <div className="space-y-4">
             <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
               <p className="text-sm text-blue-900">
-                This will grant admin privileges to: <strong>jim@est.com.au</strong>
+                This will grant admin privileges to: <strong>john@est.com.au</strong>
               </p>
               <p className="text-xs text-blue-700 mt-2">
                 Admin users can view all FNA submissions in the dashboard.
