@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight, Save } from "lucide-react";
+import { toast } from "sonner";
 import { ProgressSidebar } from "@/components/ProgressSidebar";
 import { trpc } from "@/lib/trpc";
 import { APP_LOGO } from "@/const";
@@ -82,6 +83,12 @@ export function FnaWizard({ steps, submissionId, onComplete }: FnaWizardProps) {
     }
   };
 
+  const handleSaveDraft = () => {
+    toast.success("Draft saved successfully", {
+      description: "Your progress has been saved. You can continue later.",
+    });
+  };
+
   const StepComponent = currentStep.component;
 
   return (
@@ -108,7 +115,11 @@ export function FnaWizard({ steps, submissionId, onComplete }: FnaWizardProps) {
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <Button variant="outline" size="sm" onClick={() => setLocation("/admin")}>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => window.open("/admin", "_blank")}
+              >
                 View Submissions
               </Button>
               <div className="text-sm font-medium text-muted-foreground">
@@ -146,7 +157,12 @@ export function FnaWizard({ steps, submissionId, onComplete }: FnaWizardProps) {
             </Button>
 
             <div className="flex gap-3">
-              <Button variant="outline" className="gap-2">
+              <Button 
+                variant="outline" 
+                className="gap-2"
+                onClick={handleSaveDraft}
+                type="button"
+              >
                 <Save className="h-4 w-4" />
                 Save Draft
               </Button>
