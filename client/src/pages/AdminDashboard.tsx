@@ -73,9 +73,17 @@ export default function AdminDashboard() {
             <img src={APP_LOGO} alt="EST Capital" className="h-8" />
             <h1 className="text-xl font-semibold text-gray-900">Admin Dashboard</h1>
           </div>
-          <Button variant="outline" size="sm" onClick={() => setLocation("/")}>
-            Back to Home
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => setLocation("/")}>
+              Back to Home
+            </Button>
+            <Button variant="ghost" size="sm" onClick={async () => {
+              await fetch('/api/trpc/auth.logout', { method: 'POST' });
+              window.location.href = '/login';
+            }}>
+              Logout
+            </Button>
+          </div>
         </div>
       </header>
 

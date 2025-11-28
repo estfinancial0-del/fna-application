@@ -13,6 +13,7 @@ import FnaDetailView from "./pages/FnaDetailView";
 import { LoginPage } from "./pages/LoginPage";
 import RunMigration from "./pages/RunMigration";
 import MakeAdmin from "./pages/MakeAdmin";
+import AddJohnUser from "./pages/AddJohnUser";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/admin/fna/:id" component={FnaDetailView} />
       <Route path="/migrate" component={RunMigration} />
       <Route path="/make-admin" component={MakeAdmin} />
+      <Route path="/add-john" component={AddJohnUser} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

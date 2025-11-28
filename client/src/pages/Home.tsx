@@ -33,9 +33,18 @@ export default function Home() {
             <h1 className="text-2xl font-bold text-primary">{APP_TITLE}</h1>
           </div>
           {user && (
-            <Button variant="outline" size="sm" onClick={() => setLocation("/admin")}>
-              View Submissions
-            </Button>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">{user.email}</span>
+              <Button variant="outline" size="sm" onClick={() => setLocation("/admin")}>
+                View Submissions
+              </Button>
+              <Button variant="ghost" size="sm" onClick={async () => {
+                await fetch('/api/trpc/auth.logout', { method: 'POST' });
+                window.location.href = '/login';
+              }}>
+                Logout
+              </Button>
+            </div>
           )}
         </div>
       </header>
