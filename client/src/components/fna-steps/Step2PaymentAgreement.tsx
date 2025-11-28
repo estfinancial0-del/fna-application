@@ -215,7 +215,30 @@ export function Step2PaymentAgreement({ submissionId, onNext, onPrevious }: Step
                   <Input
                     id="cardNumber"
                     {...register("cardNumber", {
-                      required: paymentMethod === "credit_card" ? "Card number is required" : false
+                      required: paymentMethod === "credit_card" ? "Card number is required" : false,
+                      validate: (value) => {
+                        if (paymentMethod !== "credit_card" || !value) return true;
+                        
+                        // Remove spaces and non-digits
+                        const cleaned = value.replace(/\s+/g, '').replace(/\D/g, '');
+                        
+                        // Amex: 15 digits, starts with 34 or 37
+                        if (/^3[47]/.test(cleaned)) {
+                          return cleaned.length === 15 || "Amex card number must be 15 digits";
+                        }
+                        
+                        // Visa: 16 digits, starts with 4
+                        if (/^4/.test(cleaned)) {
+                          return cleaned.length === 16 || "Visa card number must be 16 digits";
+                        }
+                        
+                        // Mastercard: 16 digits, starts with 51-55 or 2221-2720
+                        if (/^5[1-5]/.test(cleaned) || /^2(22[1-9]|2[3-9]|[3-6]|7[01]|720)/.test(cleaned)) {
+                          return cleaned.length === 16 || "Mastercard number must be 16 digits";
+                        }
+                        
+                        return "Please enter a valid Amex, Visa, or Mastercard number";
+                      }
                     })}
                     placeholder="1234 5678 9012 3456"
                     maxLength={19}

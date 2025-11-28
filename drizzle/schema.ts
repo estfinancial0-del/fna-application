@@ -70,10 +70,10 @@ export const paymentAgreement = mysqlTable("payment_agreement", {
   agreeBringDocuments: boolean("agreeBringDocuments").default(false),
   agree2Hours: boolean("agree2Hours").default(false),
   clientName1: varchar("clientName1", { length: 255 }),
-  clientSignature1: varchar("clientSignature1", { length: 255 }),
+  clientSignature1: text("clientSignature1"),
   clientDate1: date("clientDate1"),
   clientName2: varchar("clientName2", { length: 255 }),
-  clientSignature2: varchar("clientSignature2", { length: 255 }),
+  clientSignature2: text("clientSignature2"),
   clientDate2: date("clientDate2"),
 });
 
