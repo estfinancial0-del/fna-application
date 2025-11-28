@@ -11,6 +11,7 @@ import FnaSuccess from "./pages/FnaSuccess";
 import AdminDashboard from "./pages/AdminDashboard";
 import FnaDetailView from "./pages/FnaDetailView";
 import { LoginPage } from "./pages/LoginPage";
+import RunMigration from "./pages/RunMigration";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/fna/success" component={FnaSuccess} />
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/admin/fna/:id" component={FnaDetailView} />
+      <Route path="/migrate" component={RunMigration} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
