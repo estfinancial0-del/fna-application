@@ -73,12 +73,9 @@ export default function AdminDashboard() {
             <img src={APP_LOGO} alt="EST Capital" className="h-8" />
             <h1 className="text-xl font-semibold text-gray-900">Admin Dashboard</h1>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">Welcome, {user?.name}</span>
-            <Button variant="outline" size="sm" onClick={() => setLocation("/")}>
-              Back to Home
-            </Button>
-          </div>
+          <Button variant="outline" size="sm" onClick={() => setLocation("/")}>
+            Back to Home
+          </Button>
         </div>
       </header>
 
