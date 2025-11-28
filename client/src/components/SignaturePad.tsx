@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -14,13 +14,15 @@ interface SignaturePadProps {
 
 export function SignaturePad({ label, value, onChange, required, error }: SignaturePadProps) {
   const sigCanvas = useRef<SignatureCanvas>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Load existing signature if provided
+  // Load existing signature only once on mount, not on every value change
   useEffect(() => {
-    if (value && sigCanvas.current) {
+    if (value && sigCanvas.current && !isInitialized) {
       sigCanvas.current.fromDataURL(value);
+      setIsInitialized(true);
     }
-  }, [value]);
+  }, [value, isInitialized]);
 
   const handleClear = () => {
     if (sigCanvas.current) {
