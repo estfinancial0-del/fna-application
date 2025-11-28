@@ -29,6 +29,11 @@ export default function FnaIntroduction() {
             <img src={APP_LOGO} alt="EST Financial" className="h-8" />
             <h1 className="text-xl font-semibold text-gray-900">Financial Needs Analysis</h1>
           </div>
+          {user && (
+            <Button variant="outline" size="sm" onClick={() => setLocation("/admin")}>
+              View Submissions
+            </Button>
+          )}
         </div>
       </header>
 

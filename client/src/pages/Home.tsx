@@ -37,11 +37,9 @@ export default function Home() {
               <div className="text-sm text-muted-foreground">
                 Welcome, {user.name || user.email}
               </div>
-              {user.role === "admin" && (
-                <Button variant="outline" size="sm" onClick={() => setLocation("/admin")}>
-                  Admin Dashboard
-                </Button>
-              )}
+              <Button variant="outline" size="sm" onClick={() => setLocation("/admin")}>
+                View Submissions
+              </Button>
             </div>
           )}
         </div>

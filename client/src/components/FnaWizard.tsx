@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -21,6 +22,7 @@ interface FnaWizardProps {
 }
 
 export function FnaWizard({ steps, submissionId, onComplete }: FnaWizardProps) {
+  const [, setLocation] = useLocation();
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const currentStep = steps[currentStepIndex];
@@ -94,8 +96,13 @@ export function FnaWizard({ steps, submissionId, onComplete }: FnaWizardProps) {
                 Step {currentStepIndex + 1} of {steps.length}: {currentStep.title}
               </p>
             </div>
-            <div className="text-sm font-medium text-muted-foreground">
-              {Math.round(progress)}% Complete
+            <div className="flex items-center gap-3">
+              <Button variant="outline" size="sm" onClick={() => setLocation("/admin")}>
+                View Submissions
+              </Button>
+              <div className="text-sm font-medium text-muted-foreground">
+                {Math.round(progress)}% Complete
+              </div>
             </div>
           </div>
           <Progress value={progress} className="h-2" />
