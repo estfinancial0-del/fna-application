@@ -18,7 +18,12 @@ export function SignaturePad({ label, value, onChange, required, error }: Signat
 
   // Load existing signature only once on mount, not on every value change
   useEffect(() => {
+    if (value && sigCanvas.current && !isInitialized && !sigCanvas.current.isEmpty()) {
+      // Only load if canvas is empty to prevent duplication
+      return;
+    }
     if (value && sigCanvas.current && !isInitialized) {
+      sigCanvas.current.clear(); // Clear first to prevent duplication
       sigCanvas.current.fromDataURL(value);
       setIsInitialized(true);
     }
@@ -27,6 +32,7 @@ export function SignaturePad({ label, value, onChange, required, error }: Signat
   const handleClear = () => {
     if (sigCanvas.current) {
       sigCanvas.current.clear();
+      setIsInitialized(false);
       onChange("");
     }
   };
